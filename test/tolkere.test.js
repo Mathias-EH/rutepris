@@ -32,6 +32,7 @@ test('Ferde, felles takst uten rushtid (Nord-Jæren): elbil 70 % av avtalepris',
   assert.deepEqual(d.felles.elbil, { avtale: 16.8, full: 30 }); // elbil uten avtale betaler full pris
   assert.equal(d.felles.diesel, null);
   assert.equal(d.rush, null);
+  assert.equal(d.timesregel.regel, 'forste'); // «Det er den første passeringen som vil bli belastet»
   assert.equal(d.gyldigFra, 'Fra 4. august 2026');
 });
 
@@ -50,6 +51,8 @@ test('Ferde, Kristiansand: rushtid på alle stasjoner og egen elbiltakst uten av
   assert.deepEqual(d.felles.elbil, { avtale: 10.4, rushAvtale: 15.2, full: 13, rushFull: 19 });
   assert.equal(d.rushAlleStasjoner, true);
   assert.deepEqual(d.rush?.vinduer, [['06:30', '09:00'], ['14:30', '17:00']]);
+  // Første passering bestemmer prisen, så en passering rett før rushtid gir lav takst også for den neste
+  assert.deepEqual(d.timesregel, { aktiv: true, minutter: 60, regel: 'forste', kreverAvtale: false });
 });
 
 test('Vegamot, Miljøpakken Trondheim: stasjonsnummer, rushtid og nullutslipp', () => {

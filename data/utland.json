@@ -1,5 +1,5 @@
 {
- "generert": "2026-11-12T17:41:13.850Z",
+ "generert": "2026-11-12T20:55:05.061Z",
  "priserSistOppdatert": "2026-11-12",
  "beskrivelse": "Bom- og broavgifter i Sverige og Danmark. Posisjoner fra OpenStreetMap, takster lagt inn for hånd fra kildene (scripts/lib/utland.js), regnet om til kroner med Norges Banks kurs.",
  "kurser": {

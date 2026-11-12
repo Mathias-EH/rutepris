@@ -105,7 +105,8 @@ export function tolkFerde(html) {
     ut.timesregel = {
       aktiv: true,
       minutter: Number((del.match(/(\d+) minutter/) || [])[1]) || 60,
-      regel: /dyreste/.test(del) ? 'dyreste' : null,
+      // Ferde oppgir regelen per prosjekt: «den dyreste passeringen» (Bergen) eller «den første passeringen» (Kristiansand, Nord-Jæren)
+      regel: /dyreste/.test(del) ? 'dyreste' : /første passeringen/i.test(del) ? 'forste' : null,
       kreverAvtale: /Timesregel\|Med gyldig AutoPASS-avtale/.test(del),
     };
   } else if (/gis ikke timesregel/i.test(tekst)) {

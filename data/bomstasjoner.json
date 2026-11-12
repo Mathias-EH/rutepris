@@ -1,5 +1,5 @@
 {
- "generert": "2026-11-12T17:24:16.705Z",
+ "generert": "2026-11-12T20:55:03.892Z",
  "priserSistOppdatert": "2026-11-12",
  "beskrivelse": "Bomstasjoner i Norge. Takster i kroner. full = uten avtale, avtale = med AutoPASS-avtale og brikke. Generert av scripts/oppdater-data.js.",
  "generelleRegler": {
@@ -933,7 +933,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -992,7 +992,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -1051,7 +1051,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -1112,7 +1112,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -1171,7 +1171,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -1230,7 +1230,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -1289,7 +1289,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -1348,7 +1348,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -1407,7 +1407,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -1466,7 +1466,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -1525,7 +1525,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -1584,7 +1584,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -1643,7 +1643,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -1702,7 +1702,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -1761,7 +1761,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -1820,7 +1820,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -1879,7 +1879,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -1938,7 +1938,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -1997,7 +1997,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -2056,7 +2056,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -2117,7 +2117,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -2176,7 +2176,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -2235,7 +2235,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -2294,7 +2294,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -2353,7 +2353,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -2412,7 +2412,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -2471,7 +2471,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -2530,7 +2530,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -2589,7 +2589,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -2648,7 +2648,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -2707,7 +2707,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -2766,7 +2766,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -2825,7 +2825,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -2884,7 +2884,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -2943,7 +2943,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -3002,7 +3002,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -3061,7 +3061,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -3120,7 +3120,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 75,
@@ -28119,7 +28119,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 40,
@@ -28180,7 +28180,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 40,
@@ -28239,7 +28239,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 40,
@@ -28298,7 +28298,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 40,
@@ -28357,7 +28357,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 40,
@@ -28416,7 +28416,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "100001",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 40,
@@ -29053,7 +29053,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "200026",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 50,
@@ -29135,7 +29135,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "200026",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 50,
@@ -29216,7 +29216,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "200026",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 50,
@@ -29297,7 +29297,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "200026",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 50,
@@ -29378,7 +29378,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "200026",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 50,
@@ -29460,7 +29460,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "200026",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 50,
@@ -29541,7 +29541,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "200026",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 50,
@@ -29622,7 +29622,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "200026",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 50,
@@ -29703,7 +29703,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "200026",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 50,
@@ -29784,7 +29784,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "200026",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 50,
@@ -29865,7 +29865,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "200026",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 50,
@@ -29946,7 +29946,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "200026",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 50,
@@ -30027,7 +30027,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "200026",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 50,
@@ -30108,7 +30108,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "200026",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 50,
@@ -30189,7 +30189,7 @@
     "aktiv": true,
     "minutter": 60,
     "gruppe": "200026",
-    "regel": "dyreste",
+    "regel": "forste",
     "kreverAvtale": false
    },
    "maanedstak": 50,

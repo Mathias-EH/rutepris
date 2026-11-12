@@ -45,9 +45,9 @@ Uten registreringsnummer velges biltype, og da brukes gjennomsnittstall for forb
 |---|---|---|---|
 | Elbil | 19 kWh/100 km i årssnitt: 17,4 om sommeren, 21,2 om vinteren. Rekkevidde 448 km om sommeren | spotpris | NAFs tall for ladekostnad, fordelt med vinterfaktoren over |
 | Bensin | 7,4 l/100 km | 25 kr/l | Statens vegvesens snitt for de mest solgte bilene, pluss 14 % (ICCT) |
-| Diesel | 6,2 l/100 km | 24 kr/l | Samme regnemåte |
+| Diesel | 6,2 l/100 km | 27,50 kr/l | Samme regnemåte. Pris: SSBs månedssnitt for september 2026 (27,52 kr) |
 | Ladbar hybrid | 4,2 l/100 km | 25 kr/l | ICCT |
-| Tungt kjøretøy | 30 l/100 km | 24 kr/l | |
+| Tungt kjøretøy | 30 l/100 km | 27,50 kr/l | |
 
 Forbruk og drivstoffpris kan justeres med glidebrytere i rutekortet for bensin, diesel og hybrid. Elbil har glidebryter for hurtigladepris når turen krever lading underveis. Verdiene huskes i nettleseren.
 

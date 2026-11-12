@@ -279,10 +279,12 @@ export const STANDARD_FORBRUK = {
   // pris = hjemmelading med Norgespris og nettleie (0,50 + 0,34). Serveren bytter den ut med spotpris når den finnes.
   // hurtigpris = typisk listepris hos de store kjedene (Circle K og Recharge 5,99, Kople 5,70 kr/kWh).
   elbil: { wltp: 17.4, rekkevidde: 448, enhet: 'kWh', pris: 0.84, hurtigpris: 5.9 },
+  // Drivstoffpris: SSBs månedssnitt for september 2026 var 26,18 kr (bensin 95) og 27,52 kr (diesel);
+  // Drivstoffappens snitt for oktober 25,5 og 27,7. Diesel har vært dyrere enn bensin siden avgiftskuttet falt bort 1.9.2026.
   bensin: { per100km: 7.4, enhet: 'liter', pris: 25.0 },
-  diesel: { per100km: 6.2, enhet: 'liter', pris: 24.0 },
+  diesel: { per100km: 6.2, enhet: 'liter', pris: 27.5 },
   hybrid: { per100km: FORBRUKSFAKTOR.ladbarHybridLiter, enhet: 'liter', pris: 25.0 },
-  tung: { per100km: 30, enhet: 'liter', pris: 24.0 },
+  tung: { per100km: 30, enhet: 'liter', pris: 27.5 },
 };
 
 // Elbil på langtur: du starter med hjemmeladet batteri og bruker 80 % av rekkevidden før du må lade.
