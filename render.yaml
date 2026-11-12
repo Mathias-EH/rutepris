@@ -1,4 +1,4 @@
-# Oppskrift for gratis hosting hos Render (https://render.com). Se README, «Legge siden på nett».
+# Oppskrift for gratis hosting hos Render (https://render.com). Se README, «Drift».
 # Render leser denne fila når du oppretter en «Blueprint» fra GitHub-repoet.
 services:
   - type: web
