@@ -112,6 +112,7 @@ export const EN = {
   'Dra for å endre forbruket.': 'Drag to change the consumption.',
   'Dra for å endre prisen.': 'Drag to change the price.',
   'Drivstoff': 'Fuel',
+  'Åpen kildekode': 'Open source',
   'Bruk to fingre for å flytte kartet': 'Use two fingers to move the map',
   ' + {pris} ferje': ' + {pris} ferry',
 

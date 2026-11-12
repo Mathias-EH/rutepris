@@ -10,6 +10,10 @@
 </p>
 
 <p align="center">
+  <a href="https://rutepris.onrender.com"><strong>rutepris.onrender.com</strong></a>
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/lisens-MIT-534AB7" alt="Lisens: MIT">
   <img src="https://img.shields.io/badge/node-%E2%89%A5%2020-534AB7" alt="Node 20 eller nyere">
   <img src="https://img.shields.io/badge/avhengigheter-0-534AB7" alt="Ingen avhengigheter">
