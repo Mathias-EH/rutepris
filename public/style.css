@@ -1,0 +1,438 @@
+/* Rutepris – fargerik, men ryddig. Lys og mørk modus. */
+
+:root {
+  /* Merkevaren: lilla #534AB7 (merket) og gul #FAC775 (prikken). --merke-tekst er lilla som er lesbar på bakgrunnen. */
+  --merke: #534AB7;
+  --merke-gul: #FAC775;
+  --merke-tekst: #534AB7;
+  --bg: #f4f5f9;
+  --flate: #ffffff;
+  --tekst: #1b1d21;
+  --dempet: #666b74;
+  --linje: #e3e5ec;
+  --aksent: #3563e9;
+  --aksent-tekst: #ffffff;
+  --aksent-svak: #e9effe;
+  --fare: #b3261e;
+  --advarsel-bg: #fdf3dc;
+  --advarsel-tekst: #6b4a00;
+
+  /* Fargepalett */
+  --bla: #3563e9;
+  --lilla: #8b4fc9;
+  --oransje: #e8830c;
+  --gronn: #1f9d55;
+  --turkis: #0e9aa7;
+  --gul: #d99a00;
+  --rod: #d0342c;
+  --rosa: #d6336c;
+
+  --betalt: var(--rod);
+  --gratis: #8a8f98;
+  --unngaatt: var(--gronn);
+  --rute-raskeste: var(--bla);
+  --rute-kompromiss: var(--lilla);
+  --rute-billigste: var(--oransje);
+  --rute-ferje: var(--turkis);
+  --skygge: 0 1px 2px rgba(20, 22, 26, .06), 0 6px 20px rgba(30, 40, 90, .07);
+  --radius: 16px;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="lys"]) {
+    --bg: #111318; --flate: #1b1d24; --tekst: #ecedef; --dempet: #9a9fa8; --linje: #2b2e37;
+    --aksent: #7ea2f5; --aksent-tekst: #0e1320; --aksent-svak: #1f2a44; --fare: #f2877f;
+    --advarsel-bg: #3a2f12; --advarsel-tekst: #f1d48a;
+    --bla: #7ea2f5; --lilla: #b98af0; --oransje: #f0a53a; --gronn: #3fc27a; --turkis: #3cc5d0; --gul: #f2c14e; --rod: #f0625a; --rosa: #f472a8;
+    --gratis: #9aa0aa;
+    --skygge: 0 1px 2px rgba(0, 0, 0, .4), 0 6px 20px rgba(0, 0, 0, .28);
+    color-scheme: dark;
+  }
+}
+:root[data-tema="mork"] {
+  --bg: #111318; --flate: #1b1d24; --tekst: #ecedef; --dempet: #9a9fa8; --linje: #2b2e37;
+  --aksent: #7ea2f5; --aksent-tekst: #0e1320; --aksent-svak: #1f2a44; --fare: #f2877f;
+  --advarsel-bg: #3a2f12; --advarsel-tekst: #f1d48a;
+  --bla: #7ea2f5; --lilla: #b98af0; --oransje: #f0a53a; --gronn: #3fc27a; --turkis: #3cc5d0; --gul: #f2c14e; --rod: #f0625a; --rosa: #f472a8;
+  --gratis: #9aa0aa;
+  --skygge: 0 1px 2px rgba(0, 0, 0, .4), 0 6px 20px rgba(0, 0, 0, .28);
+  color-scheme: dark;
+}
+
+/* Merkefargen i tekst må være lysere på mørk bakgrunn */
+@media (prefers-color-scheme: dark) { :root:not([data-tema="lys"]) { --merke-tekst: #AFA9EC; } }
+:root[data-tema="mork"] { --merke-tekst: #AFA9EC; }
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--tekst);
+  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+h1, h2, h3, p { margin: 0; }
+button, input, select { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+
+.ikon { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- Oppsett ---------- */
+.oppsett { display: grid; grid-template-columns: minmax(360px, 440px) 1fr; min-height: 100vh; }
+.panel { padding: 26px 24px 30px; display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+.kartflate { position: sticky; top: 0; height: 100vh; }
+#kart { height: 100%; width: 100%; background: var(--linje); }
+
+@media (max-width: 860px) {
+  .oppsett { grid-template-columns: 1fr; }
+  .panel { padding: 18px 14px 22px; gap: 18px; }
+  .kartflate { position: relative; height: 62vh; min-height: 340px; order: 2; }
+}
+
+/* Ekstra brede skjermer: litt bredere panel, så kortene ikke blir en smal stripe */
+@media (min-width: 2000px) {
+  .oppsett { grid-template-columns: 520px 1fr; }
+}
+
+/* Smale mobiler: gi dato og glidebryter plassen de trenger */
+@media (max-width: 400px) {
+  input[type="datetime-local"] { padding-right: 6px; font-size: .92rem; }
+  .medikon > input[type="datetime-local"] { padding-left: 36px; }
+  .tekstknapp { padding: 0 12px; }
+  .hurtigvelger { flex-wrap: wrap; }
+  .hurtigvelger output { margin-left: auto; }
+  .hurtigvelger input[type="range"] { order: 3; flex-basis: 100%; }
+}
+
+/* ---------- Topp ---------- */
+.topp { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+h1 {
+  display: flex; align-items: center; gap: 10px; font-size: 1.6rem; font-weight: 800; letter-spacing: -.02em; line-height: 1.15; color: var(--tekst);
+}
+/* Rutepris: merket i lilla med gul prikk, og «pris» i ordmerket i samme lilla */
+.logo { width: 36px; height: 36px; flex: none; border-radius: 9px; box-shadow: 0 4px 12px color-mix(in srgb, var(--merke) 35%, transparent); }
+.merkedel { color: var(--merke-tekst); }
+/* Logoen i toppen er en knapp tilbake til oppstartssiden */
+.hjemknapp { display: flex; align-items: center; gap: 10px; padding: 0; border: 0; border-radius: 12px; background: none; font-weight: inherit; letter-spacing: inherit; line-height: inherit; cursor: pointer; }
+.hjemknapp .logo { transition: transform .2s cubic-bezier(.3, 1.5, .5, 1); }
+.hjemknapp:hover .logo { transform: rotate(-8deg) scale(1.08); }
+.hjemknapp:active .logo { transform: scale(.94); }
+
+.ikonknapp {
+  display: inline-grid; place-items: center; width: 40px; height: 40px; flex: none;
+  border: 1px solid var(--linje); border-radius: 50%; background: var(--flate); color: var(--dempet); cursor: pointer;
+  transition: transform .2s, color .15s, border-color .15s;
+}
+.ikonknapp:hover { color: var(--aksent); border-color: var(--aksent); }
+#temaKnapp:hover { transform: rotate(-20deg); }
+.bytt:hover { transform: translateY(-50%) rotate(180deg); }
+
+/* ---------- Skjema ---------- */
+.skjema { display: flex; flex-direction: column; gap: 11px; }
+.felt { display: flex; flex-direction: column; gap: 6px; min-width: 0; position: relative; flex: 1; }
+.rad { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+#stromRad { grid-template-columns: 1fr; }
+label { font-size: .8rem; font-weight: 600; color: var(--dempet); }
+input, select {
+  width: 100%; height: 46px; padding: 0 14px;
+  border: 1px solid var(--linje); border-radius: 11px; background: var(--flate);
+  transition: border-color .12s, box-shadow .12s;
+}
+select { appearance: none; padding-right: 30px; background-image: linear-gradient(45deg, transparent 50%, var(--dempet) 50%), linear-gradient(135deg, var(--dempet) 50%, transparent 50%); background-position: calc(100% - 17px) 20px, calc(100% - 12px) 20px; background-size: 5px 5px; background-repeat: no-repeat; text-overflow: ellipsis; }
+input:focus, select:focus, button:focus-visible, summary:focus-visible, .kort:focus-visible {
+  outline: none; border-color: var(--aksent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--aksent) 28%, transparent);
+}
+.medikon > .ikon { position: absolute; left: 13px; top: 14px; color: var(--dempet); pointer-events: none; }
+.medikon > input, .medikon > select { padding-left: 40px; }
+.i-bilfelt > .ikon { color: var(--bla); }
+.i-brikkefelt > .ikon { color: var(--lilla); }
+.i-tidfelt > .ikon { color: var(--turkis); }
+
+.steder { display: grid; grid-template-columns: 1fr; gap: 8px; position: relative; }
+.bytt { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); z-index: 2; width: 34px; height: 34px; box-shadow: var(--skygge); }
+.steder input { padding-left: 38px; padding-right: 50px; }
+.prikkA, .prikkB { position: absolute; left: 14px; top: 17px; width: 12px; height: 12px; border-radius: 50%; z-index: 1; pointer-events: none; }
+.prikkA { background: var(--gronn); box-shadow: 0 0 0 3px color-mix(in srgb, var(--gronn) 22%, transparent); }
+.prikkB { background: var(--rosa); box-shadow: 0 0 0 3px color-mix(in srgb, var(--rosa) 22%, transparent); }
+
+.forslag {
+  position: absolute; left: 0; right: 0; top: calc(100% + 4px); z-index: 1200;
+  margin: 0; padding: 6px; list-style: none; max-height: 320px; overflow: auto;
+  background: var(--flate); border: 1px solid var(--linje); border-radius: 12px; box-shadow: var(--skygge);
+  animation: ned .14s ease-out;
+}
+.forslag li { padding: 9px 10px; border-radius: 8px; cursor: pointer; display: flex; flex-direction: column; }
+.forslag li[aria-selected="true"], .forslag li:hover { background: var(--aksent-svak); }
+.forslag .detalj { font-size: .82rem; color: var(--dempet); }
+.forslag .tom { color: var(--dempet); cursor: default; }
+.forslag .tom:hover { background: none; }
+
+.medknapp { display: flex; gap: 8px; }
+.tekstknapp { height: 46px; padding: 0 16px; border: 1px solid var(--linje); border-radius: 11px; background: var(--flate); cursor: pointer; font-weight: 600; color: var(--aksent); transition: border-color .12s, background .12s; }
+.tekstknapp:hover { border-color: var(--aksent); background: var(--aksent-svak); }
+.tekstknapp[aria-pressed="true"] { border-color: var(--turkis); color: var(--turkis); background: color-mix(in srgb, var(--turkis) 12%, var(--flate)); }
+.tekstknapp { white-space: nowrap; }
+
+/* Brytere for tur/retur og ferjer */
+.brytere { display: flex; flex-wrap: wrap; gap: 10px 22px; }
+.bryter { display: inline-flex; align-items: center; gap: 8px; font-size: .92rem; font-weight: 600; color: var(--tekst); cursor: pointer; user-select: none; width: fit-content; }
+.bryter input { position: absolute; opacity: 0; width: 0; height: 0; }
+.bryter .spor { width: 40px; height: 23px; border-radius: 99px; background: var(--linje); position: relative; transition: background .2s; flex: none; }
+.bryter .spor::after { content: ""; position: absolute; top: 3px; left: 3px; width: 17px; height: 17px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, .3); transition: transform .2s cubic-bezier(.3, 1.4, .5, 1); }
+.bryter input:checked + .spor { background: var(--turkis); }
+.bryter input:checked + .spor::after { transform: translateX(17px); }
+.bryter input:focus-visible + .spor { box-shadow: 0 0 0 3px color-mix(in srgb, var(--aksent) 28%, transparent); }
+.bryter .ikon { color: var(--turkis); }
+
+/* ---------- Oppstartsside ---------- */
+/* Dekker hele vinduet første gang siden åpnes. Skriptet i <head> setter data-start før siden tegnes. */
+.start { display: none; }
+:root[data-start="ja"] .start {
+  display: grid; place-items: center; position: fixed; inset: 0; z-index: 5000; overflow: auto;
+  padding: 28px 20px; background: var(--bg);
+  transition: opacity .32s ease, transform .38s ease;
+}
+.start.ut { opacity: 0; transform: translateY(-14px); pointer-events: none; }
+.start-boks { width: 100%; max-width: 380px; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
+.start-logo { width: 88px; height: 88px; border-radius: 22px; box-shadow: 0 10px 30px color-mix(in srgb, var(--merke) 40%, transparent); animation: startInn .5s cubic-bezier(.2, .9, .3, 1.2) backwards; }
+/* Ruta i logoen tegnes fra start til mål, og målprikken spretter fram til slutt */
+.start-rute { stroke-dasharray: 1; animation: tegn .9s .35s ease-out backwards; }
+.start-fra { transform-box: fill-box; transform-origin: center; animation: pop .35s .25s cubic-bezier(.3, 1.6, .5, 1) backwards; }
+.start-til { transform-box: fill-box; transform-origin: center; animation: pop .45s 1.15s cubic-bezier(.3, 1.8, .5, 1) backwards; }
+.start h2 { font-size: 2.3rem; font-weight: 800; letter-spacing: -.03em; line-height: 1.1; margin-top: 6px; animation: innKort .45s .15s backwards; }
+.start-slagord { font-size: 1.12rem; color: var(--dempet); margin-top: -8px; animation: innKort .45s .25s backwards; }
+.start-punkter { list-style: none; margin: 8px 0 4px; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.start-punkter li { display: inline-flex; align-items: center; gap: 7px; padding: 7px 13px; border-radius: 99px; font-size: .92rem; font-weight: 600; animation: pop .4s cubic-bezier(.3, 1.5, .5, 1) backwards; }
+.start-punkter .p-bom { color: var(--rod); background: color-mix(in srgb, var(--rod) 13%, transparent); animation-delay: .5s; }
+.start-punkter .p-ferje { color: var(--turkis); background: color-mix(in srgb, var(--turkis) 13%, transparent); animation-delay: .62s; }
+.start-punkter .p-strom { color: var(--gul); background: color-mix(in srgb, var(--gul) 15%, transparent); animation-delay: .74s; }
+.start-punkter .p-drivstoff { color: var(--oransje); background: color-mix(in srgb, var(--oransje) 14%, transparent); animation-delay: .86s; }
+.start-punkter .ikon { width: 17px; height: 17px; }
+/* Mens oppstartssiden vises, skal ikke siden bak kunne rulles (ellers åpner den midt på) */
+:root[data-start="ja"] body { overflow: hidden; }
+.start-skjema { width: 100%; display: flex; flex-direction: column; gap: 11px; margin-top: 10px; animation: innKort .45s .85s backwards; }
+.start-skjema input { text-align: center; font-size: 1.05rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; height: 52px; padding-right: 40px; }
+.start-skjema input::placeholder { letter-spacing: 0; font-weight: 400; text-transform: none; }
+.start-skjema .medikon > .ikon { top: 17px; }
+.start-skjema .bilnavn { margin: 0; color: var(--gronn); font-weight: 600; font-size: .95rem; animation: pop .3s cubic-bezier(.3, 1.5, .5, 1) backwards; }
+.start-skjema .hovedknapp { height: 54px; }
+/* Biltype uten registreringsnummer */
+.start-eller { font-size: .86rem; color: var(--dempet); margin: 2px 0 -2px; }
+.start-typer { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.typevalg { display: inline-flex; align-items: center; gap: 6px; height: 38px; padding: 0 13px; border: 1px solid var(--linje); border-radius: 99px; background: var(--flate); font-size: .9rem; font-weight: 600; cursor: pointer; transition: border-color .12s, background .12s, transform .1s; }
+.typevalg .ikon { width: 15px; height: 15px; color: var(--merke-tekst); }
+.typevalg:hover { border-color: var(--merke-tekst); transform: translateY(-1px); }
+.typevalg[aria-pressed="true"] { border-color: var(--merke-tekst); background: color-mix(in srgb, var(--merke) 16%, var(--flate)); }
+@keyframes startInn { from { opacity: .4; transform: scale(.7) rotate(-8deg); } }
+
+.avansert summary, .detaljer summary { cursor: pointer; font-weight: 600; font-size: .9rem; color: var(--dempet); border-radius: 6px; list-style: none; display: flex; align-items: center; gap: 8px; }
+.avansert summary .ikon { color: var(--gul); }
+.avansert summary::-webkit-details-marker, .detaljer summary::-webkit-details-marker { display: none; }
+.avansert summary::after, .detaljer summary::after { content: ""; width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg) translate(-2px, -2px); transition: transform .15s; margin-left: auto; margin-right: 4px; }
+.avansert[open] summary::after, .detaljer[open] summary::after { transform: rotate(-135deg) translate(-2px, -2px); }
+.avansert .rad { margin-top: 10px; }
+.avansert[open] > .rad, .detaljer[open] > .detaljer-innhold { animation: ned .18s ease-out; }
+
+.hovedknapp {
+  height: 50px; border: 0; border-radius: 13px; color: #fff; position: relative; overflow: hidden;
+  background: linear-gradient(100deg, var(--bla), var(--lilla) 60%, var(--rosa)); background-size: 200% 100%;
+  font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 4px;
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--bla) 30%, transparent);
+  transition: background-position .4s, transform .08s, box-shadow .2s;
+}
+.hovedknapp:hover { background-position: 100% 0; box-shadow: 0 8px 22px color-mix(in srgb, var(--lilla) 35%, transparent); }
+.hovedknapp:active { transform: translateY(1px) scale(.995); }
+.hovedknapp[disabled] { cursor: progress; animation: flyt 1.2s linear infinite; }
+.feil { color: var(--fare); font-size: .92rem; animation: rist .3s; }
+
+/* ---------- Resultat ---------- */
+#resultat { display: flex; flex-direction: column; gap: 12px; }
+.toppknapper { display: flex; gap: 8px; }
+/* Språkknappen viser språket du bytter til (EN eller NO) */
+.sprakknapp { font-size: .78rem; font-weight: 800; letter-spacing: .03em; color: var(--tekst); }
+.start-sprak { position: absolute; top: 18px; right: 18px; }
+#delKnapp { color: var(--aksent); }
+.lenkeknapp { margin-left: auto; padding: 2px 0; border: 0; background: none; color: var(--aksent); font-size: inherit; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.lenkeknapp:hover { text-decoration: underline; }
+.brikke.ferjeraad { background: color-mix(in srgb, var(--turkis) 15%, transparent); color: var(--turkis); }
+.brikke.ferjeraad:hover { background: color-mix(in srgb, var(--turkis) 25%, transparent); }
+.melding { color: var(--dempet); font-size: .92rem; }
+.delknapp { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border-radius: 99px; border: 1px solid var(--linje); background: var(--flate); color: var(--dempet); font-size: .84rem; font-weight: 600; cursor: pointer; margin-left: auto; transition: color .12s, border-color .12s, transform .1s; }
+.delknapp:hover { color: var(--aksent); border-color: var(--aksent); }
+.delknapp:active { transform: scale(.96); }
+.delknapp .ikon { width: 15px; height: 15px; }
+
+.skjelett { height: 132px; border-radius: var(--radius); background: linear-gradient(100deg, var(--flate) 30%, color-mix(in srgb, var(--aksent) 9%, var(--flate)) 50%, var(--flate) 70%); background-size: 250% 100%; animation: flyt 1.1s linear infinite; border: 1px solid var(--linje); }
+.skjelett:nth-child(2) { animation-delay: .12s; opacity: .8; }
+.skjelett:nth-child(3) { animation-delay: .24s; opacity: .6; }
+
+.kort {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--farge) 7%, var(--flate)), var(--flate) 64px);
+  border: 1px solid var(--linje); border-radius: var(--radius); padding: 15px 16px 12px;
+  box-shadow: var(--skygge); cursor: pointer; position: relative; border-left: 5px solid var(--farge);
+  display: flex; flex-direction: column; gap: 11px;
+  transition: border-color .15s, box-shadow .2s, transform .15s;
+  animation: innKort .38s cubic-bezier(.2, .8, .3, 1) backwards;
+}
+.kort:hover { transform: translateY(-2px); box-shadow: 0 2px 4px rgba(20, 22, 26, .07), 0 12px 28px color-mix(in srgb, var(--farge) 16%, transparent); }
+.kort[aria-pressed="true"] { border-color: var(--farge); box-shadow: 0 0 0 1px var(--farge), 0 10px 26px color-mix(in srgb, var(--farge) 20%, transparent); }
+.kort-topp { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.kort h2 { font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: 9px; padding-top: 2px; }
+.merke { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 10px; color: #fff; background: var(--farge); flex: none; }
+.merke .ikon { width: 17px; height: 17px; stroke-width: 2.3; }
+.prisblokk { text-align: right; }
+.pris { font-size: 1.5rem; font-weight: 800; letter-spacing: -.02em; white-space: nowrap; font-variant-numeric: tabular-nums; line-height: 1.2; }
+.tillegg { display: flex; flex-direction: column; font-size: .88rem; color: var(--dempet); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tillegg span { display: inline-flex; align-items: center; justify-content: flex-end; gap: 5px; }
+.tillegg .ikon { width: 14px; height: 14px; }
+.tillegg .strom, .tillegg .strom .ikon { color: var(--gul); }
+.tillegg .ferje .ikon { color: var(--turkis); }
+
+.nokkeltall { display: flex; flex-wrap: wrap; gap: 6px 18px; font-variant-numeric: tabular-nums; }
+.nokkeltall span { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; white-space: nowrap; }
+/* Kjøretiden farges etter rang: raskeste grønn, midterste gul, tregeste rød */
+.nokkeltall .tid.rask { color: var(--gronn); }
+.nokkeltall .tid.middels { color: var(--gul); }
+.nokkeltall .tid.treg { color: var(--rod); }
+.nokkeltall .km .ikon { color: var(--lilla); }
+.nokkeltall .bom .ikon { color: var(--rod); }
+.nokkeltall .advarsel { color: var(--advarsel-tekst); background: var(--advarsel-bg); padding: 1px 8px; border-radius: 99px; font-size: .8rem; }
+.nokkeltall .advarsel .ikon { color: inherit; width: 14px; height: 14px; }
+
+.brikker { display: flex; flex-wrap: wrap; gap: 6px; }
+.brikke { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 99px; font-size: .82rem; font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; border: 0; cursor: default; animation: pop .3s cubic-bezier(.3, 1.5, .5, 1) backwards; animation-delay: .25s; }
+.brikke .ikon { width: 14px; height: 14px; }
+.brikke.raad { background: color-mix(in srgb, var(--gronn) 15%, transparent); color: var(--gronn); cursor: pointer; }
+.brikke.raad:hover { background: color-mix(in srgb, var(--gronn) 25%, transparent); }
+.brikke.ferje { background: color-mix(in srgb, var(--turkis) 15%, transparent); color: var(--turkis); }
+
+/* Glidebryter for hurtigladepris */
+.hurtigvelger { display: flex; align-items: center; gap: 9px; font-size: .84rem; font-weight: 600; color: var(--dempet); cursor: default; }
+.hurtigvelger .ikon { width: 15px; height: 15px; color: var(--gul); }
+.hurtigvelger input[type="range"] { flex: 1; min-width: 60px; height: 22px; padding: 0; border: 0; background: none; accent-color: var(--gul); cursor: pointer; }
+.hurtigvelger input[type="range"]:focus { box-shadow: none; }
+.hurtigvelger input[type="range"]:focus-visible { outline: 2px solid var(--aksent); outline-offset: 2px; border-radius: 6px; }
+.hurtigvelger output { min-width: 82px; text-align: right; color: var(--tekst); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.bensinbil { display: flex; align-items: center; gap: 6px; font-size: .84rem; color: var(--dempet); font-variant-numeric: tabular-nums; }
+.bensinbil .ikon { width: 15px; height: 15px; }
+.bensinbil.pluss { color: var(--gronn); font-weight: 600; }
+.bensinbil.minus { color: var(--rod); font-weight: 600; }
+.bilnavn { font-size: .84rem; color: var(--dempet); margin-top: -4px; }
+
+.lenker { display: flex; gap: 8px; align-items: center; }
+.lenker .etappe { font-size: .8rem; font-weight: 700; color: var(--dempet); width: 40px; flex: none; }
+.lenke {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 38px; padding: 0 12px; border-radius: 10px; flex: 1;
+  border: 1px solid var(--linje); background: var(--flate); color: var(--tekst); text-decoration: none; font-size: .88rem; font-weight: 600; white-space: nowrap;
+  transition: border-color .12s, color .12s, transform .1s;
+}
+.lenke:hover { border-color: var(--aksent); color: var(--aksent); transform: translateY(-1px); }
+.lenke .ikon { color: var(--rosa); }
+
+.detaljer { border-top: 1px solid var(--linje); padding-top: 10px; cursor: default; }
+.detaljer-innhold { margin-top: 10px; display: flex; flex-direction: column; gap: 12px; font-size: .9rem; }
+.bomliste { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.bomliste li { display: grid; grid-template-columns: 44px 1fr auto; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--linje); align-items: baseline; }
+.bomliste .overskrift { display: block; padding: 10px 0 2px; font-size: .78rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; color: var(--turkis); border-bottom: 0; }
+.bomliste .kl { color: var(--dempet); font-variant-numeric: tabular-nums; }
+.bomliste .kl .ikon { width: 16px; height: 16px; vertical-align: -3px; color: var(--turkis); }
+.bomliste .navn { font-weight: 600; }
+.bomliste .under { display: block; font-weight: 400; font-size: .8rem; color: var(--dempet); }
+.bomliste .belop { font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; text-align: right; }
+.bomliste .gratis .belop { color: var(--gratis); }
+.bomliste s { color: var(--gratis); font-weight: 400; margin-right: 6px; }
+.tagg { display: inline-block; font-size: .7rem; font-weight: 700; padding: 1px 7px; border-radius: 99px; margin-left: 6px; vertical-align: 1px; background: var(--bg); color: var(--dempet); }
+.tagg.rush { background: color-mix(in srgb, var(--rod) 14%, transparent); color: var(--rod); }
+.tagg.usikker { background: var(--advarsel-bg); color: var(--advarsel-tekst); }
+.regnestykke { display: grid; grid-template-columns: 1fr auto; gap: 4px 14px; margin: 0; }
+.regnestykke dt { color: var(--dempet); display: flex; align-items: center; gap: 6px; }
+.regnestykke dt .ikon { width: 15px; height: 15px; }
+.regnestykke .d-bom .ikon { color: var(--rod); }
+.regnestykke .d-ferje .ikon { color: var(--turkis); }
+.regnestykke .d-strom .ikon { color: var(--gul); }
+.regnestykke dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+.regnestykke .liten { grid-column: 1 / -1; font-size: .8rem; color: var(--dempet); text-align: left; font-weight: 400; margin-top: -2px; }
+.regnestykke .sum { border-top: 1px solid var(--linje); padding-top: 5px; margin-top: 2px; color: var(--tekst); font-weight: 700; }
+.grunner { margin: 0; padding: 0; list-style: none; font-size: .84rem; color: var(--dempet); }
+.grunner b { color: var(--tekst); font-weight: 600; }
+.stromlinje { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 7px; font-size: .82rem; color: var(--dempet); animation: innKort .4s .3s backwards; }
+.stromlinje .ikon { width: 15px; height: 15px; color: var(--gul); }
+.stromlinje .hjemmepris { color: var(--gul); font-weight: 600; }
+
+.bunn { font-size: .78rem; color: var(--dempet); margin-top: auto; }
+
+.toast { position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%); z-index: 3000; padding: 10px 18px; border-radius: 99px; background: var(--tekst); color: var(--bg); font-size: .9rem; font-weight: 600; box-shadow: var(--skygge); animation: toast 2.2s ease forwards; }
+
+/* ---------- Kart ---------- */
+.tegnforklaring {
+  position: absolute; left: 12px; bottom: 26px; z-index: 500; display: flex; gap: 14px; flex-wrap: wrap;
+  padding: 8px 12px; border-radius: 12px; background: color-mix(in srgb, var(--flate) 92%, transparent); box-shadow: var(--skygge); font-size: .8rem;
+  animation: innKort .4s backwards;
+}
+.tegnforklaring span { display: inline-flex; align-items: center; gap: 6px; }
+.prikk { width: 11px; height: 11px; border-radius: 50%; display: inline-block; border: 2px solid var(--flate); box-shadow: 0 0 0 1px rgba(0, 0, 0, .25); }
+.prikk.betalt { background: var(--betalt); }
+.prikk.gratis { background: var(--gratis); }
+.prikk.unngaatt { background: var(--unngaatt); }
+.prikk.ferje { background: var(--turkis); }
+.strek { width: 20px; height: 6px; border-radius: 3px; display: inline-block; }
+.strek.tur { background: var(--tur, var(--bla)); }
+.strek.retur { height: 4px; background: var(--retur, var(--rosa)); }
+
+/* Kartmerker: runde merker med ikon */
+.kartmerke { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; color: #fff; background: var(--m, var(--rod)); border: 2.5px solid var(--flate); box-shadow: 0 2px 6px rgba(0, 0, 0, .35); animation: pop .35s cubic-bezier(.3, 1.6, .5, 1) backwards; transition: transform .15s; cursor: pointer; }
+.kartmerke:hover { transform: scale(1.18); }
+.kartmerke .ikon { width: 15px; height: 15px; stroke-width: 2.4; }
+.kartmerke.stort { width: 34px; height: 34px; }
+.kartmerke.stort .ikon { width: 19px; height: 19px; }
+.kartmerke.start { --m: var(--gronn); }
+.kartmerke.maal { --m: var(--rosa); }
+.kartmerke.ferje { --m: var(--turkis); }
+.kartmerke.betalt { --m: var(--rod); }
+.kartmerke.gratis { --m: var(--gratis); }
+.kartmerke.unngaatt { --m: var(--gronn); }
+.kartmerke.ukjent { --m: var(--gul); }
+
+/* Rutelinja tegnes opp. Uten animasjon (eller om den stopper) er linja hel: dashoffset er bare satt i selve animasjonen. */
+.rute-tegn { stroke-dasharray: 1; animation: tegn 1.3s ease-out backwards; }
+
+/* Nettleseren tegner en fokusramme rundt hele rutelinja når den klikkes. Valgt rute vises allerede med farge og tykkelse. */
+.leaflet-container path.leaflet-interactive:focus { outline: none; }
+
+.leaflet-container { font: inherit; background: var(--linje); }
+.leaflet-popup-content-wrapper, .leaflet-popup-tip { background: var(--flate); color: var(--tekst); box-shadow: var(--skygge); }
+.leaflet-popup-content-wrapper { border-radius: 14px; }
+.leaflet-popup-content { margin: 12px 14px; font-size: .88rem; line-height: 1.45; }
+.leaflet-popup-content b { font-size: .95rem; }
+.leaflet-popup-content .under { color: var(--dempet); display: block; }
+.leaflet-bar a { background: var(--flate); color: var(--tekst); border-bottom-color: var(--linje); }
+/* Krediteringen til OpenStreetMap må stå (lisenskrav), men er gjort liten og dempet */
+.leaflet-control-attribution { background: color-mix(in srgb, var(--flate) 55%, transparent) !important; color: var(--dempet); font-size: 10px; line-height: 1.5; padding: 0 5px !important; border-radius: 6px 0 0 0; opacity: .75; }
+.leaflet-control-attribution a { color: var(--dempet); text-decoration: none; }
+/* «Bruk to fingre»-hintet på mobil */
+.karthint { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 600; padding: 9px 16px; border-radius: 99px; background: color-mix(in srgb, var(--tekst) 88%, transparent); color: var(--bg); font-size: .9rem; font-weight: 600; white-space: nowrap; pointer-events: none; }
+/* Kort som tegnes på nytt etter en glidebryter eller språkbytte skal ikke animeres inn igjen */
+.stille, .stille * { animation: none !important; }
+.leaflet-div-icon { background: none; border: 0; }
+
+/* Mørkt kart: inverter kartflisene, ikke rutene og markørene */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="lys"]) .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(.92) contrast(.88) saturate(.7); }
+}
+:root[data-tema="mork"] .leaflet-tile-pane { filter: invert(1) hue-rotate(180deg) brightness(.92) contrast(.88) saturate(.7); }
+
+/* ---------- Animasjoner ---------- */
+/* Ingen animasjon starter helt usynlig: stopper nettleseren opp underveis, skal innholdet likevel synes. */
+@keyframes innKort { from { opacity: .4; transform: translateY(14px); } }
+@keyframes ned { from { opacity: .4; transform: translateY(-6px); } }
+@keyframes pop { from { transform: scale(.4); } }
+@keyframes flyt { to { background-position: -250% 0; } }
+@keyframes tegn { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes rist { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+@keyframes toast { 0% { opacity: 0; transform: translate(-50%, 12px); } 12%, 82% { opacity: 1; transform: translate(-50%, 0); } 100% { opacity: 0; transform: translate(-50%, 8px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation-duration: .001s !important; animation-delay: 0s !important; }
+}

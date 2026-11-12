@@ -1,0 +1,14 @@
+{
+  "name": "rutepris",
+  "version": "1.0.0",
+  "description": "Rutepris: bompenger, ferje og strøm i én sum, og den billigste bilruta i Norge, Sverige og Danmark",
+  "license": "MIT",
+  "type": "module",
+  "private": true,
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test",
+    "oppdater-data": "node scripts/oppdater-data.js"
+  }
+}

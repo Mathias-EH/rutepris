@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="nb">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rutepris – hva koster turen?</title>
+  <meta name="description" content="Se hva bilturen koster før du kjører: bompenger, ferje og strøm i én sum, og den billigste ruta i Norge, Sverige og Danmark.">
+  <meta property="og:title" content="Rutepris – hva koster turen?">
+  <meta property="og:description" content="Bom, ferje og strøm i én sum. Sammenlign raskeste og billigste rute før du kjører.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="logo.svg">
+  <meta name="theme-color" content="#534AB7">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    // Sett tema før siden tegnes, så den ikke blinker.
+    try { const t = localStorage.getItem('tema'); if (t === 'lys' || t === 'mork') document.documentElement.dataset.tema = t; } catch (e) {}
+    // Oppstartssiden vises første gang, men ikke når noen åpner en delt lenke til et søk.
+    try { const p = new URLSearchParams(location.search); if (!localStorage.getItem('rutepris-start') && !(p.get('fra') && p.get('til'))) document.documentElement.dataset.start = 'ja'; } catch (e) {}
+  </script>
+</head>
+<body>
+  <!-- Ikoner. Brukes med <svg class="ikon"><use href="#i-navn"/></svg> -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="i-bil" viewBox="0 0 24 24"><path d="M5 17H3v-5l2-5h11l3 5h2v5h-2"/><path d="M9 17h6"/><path d="M4 12h15"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></symbol>
+    <symbol id="i-klokke" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-avstand" viewBox="0 0 24 24"><path d="M3 12h18"/><path d="M7 8l-4 4 4 4"/><path d="M17 8l4 4-4 4"/></symbol>
+    <symbol id="i-bom" viewBox="0 0 24 24"><path d="M5 21V5"/><path d="M19 21V5"/><path d="M5 8h14"/><path d="M9 8v3"/><path d="M15 8v3"/></symbol>
+    <symbol id="i-strom" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></symbol>
+    <symbol id="i-drivstoff" viewBox="0 0 24 24"><path d="M4 21V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16"/><path d="M3 21h12"/><path d="M4 10h10"/><path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0V9l-3-3"/></symbol>
+    <symbol id="i-brikke" viewBox="0 0 24 24"><path d="M3 11V4h7l10 10-7 7z"/><circle cx="7.5" cy="8" r="1.2"/></symbol>
+    <symbol id="i-kart" viewBox="0 0 24 24"><path d="M12 21s-7-6-7-11a7 7 0 0 1 14 0c0 5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+    <symbol id="i-spart" viewBox="0 0 24 24"><path d="M3 7l6 6 4-4 8 8"/><path d="M21 11v6h-6"/></symbol>
+    <symbol id="i-varsel" viewBox="0 0 24 24"><path d="M12 3 2 20h20z"/><path d="M12 10v4"/><path d="M12 17h.01"/></symbol>
+    <symbol id="i-ferje" viewBox="0 0 24 24"><path d="M3 15l2 5h14l2-5-9-3z"/><path d="M6 13.5V8h12v5.5"/><path d="M10 8V4h4v4"/></symbol>
+    <symbol id="i-flagg" viewBox="0 0 24 24"><path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/></symbol>
+    <symbol id="i-del" viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.600-4.500"/><path d="M8.2 13.2l7.600 4.500"/></symbol>
+    <symbol id="i-vekt" viewBox="0 0 24 24"><path d="M12 4v16"/><path d="M7 20h10"/><path d="M5 7h14"/><path d="M5 7l-2.5 6a2.800 2.800 0 0 0 5 0z"/><path d="M19 7l-2.5 6a2.800 2.800 0 0 0 5 0z"/></symbol>
+    <symbol id="i-retur" viewBox="0 0 24 24"><path d="M4 9h13a3 3 0 0 1 0 6H9"/><path d="M8 5 4 9l4 4"/></symbol>
+    <symbol id="i-bytt" viewBox="0 0 24 24"><path d="M7 4v13"/><path d="M3.5 13.5 7 17l3.5-3.5"/><path d="M17 20V7"/><path d="M13.5 10.5 17 7l3.5 3.5"/></symbol>
+  </svg>
+
+  <!-- Oppstartsside: det første nye brukere ser. Lukkes med «Kom i gang» og vises ikke igjen på samme enhet. -->
+  <section class="start" id="start" aria-labelledby="startTittel">
+    <button type="button" class="ikonknapp sprakknapp start-sprak" aria-label="Switch to English" title="Switch to English">EN</button>
+    <div class="start-boks">
+      <svg class="start-logo" viewBox="0 0 56 56" aria-hidden="true"><rect width="56" height="56" rx="14" fill="#534AB7"/><path class="start-rute" pathLength="1" d="M15 41 C15 27, 41 31, 41 16" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/><circle class="start-fra" cx="15" cy="41" r="5" fill="#FFFFFF"/><circle class="start-til" cx="41" cy="16" r="7" fill="#FAC775"/></svg>
+      <h2 id="startTittel">Rute<span class="merkedel">pris</span></h2>
+      <p class="start-slagord" data-t>Hva koster turen?</p>
+      <ul class="start-punkter" aria-label="Rutepris regner ut" data-ta="aria-label">
+        <li class="p-bom" data-t><svg class="ikon" aria-hidden="true"><use href="#i-bom"/></svg>Bompenger</li>
+        <li class="p-ferje" data-t><svg class="ikon" aria-hidden="true"><use href="#i-ferje"/></svg>Ferje</li>
+        <li class="p-strom" data-t><svg class="ikon" aria-hidden="true"><use href="#i-strom"/></svg>Strøm</li>
+        <li class="p-drivstoff" data-t><svg class="ikon" aria-hidden="true"><use href="#i-drivstoff"/></svg>Drivstoff</li>
+      </ul>
+      <form id="startSkjema" class="start-skjema" autocomplete="off" novalidate>
+        <div class="felt medikon i-bilfelt" id="startRegnrFelt" hidden>
+          <svg class="ikon" aria-hidden="true"><use href="#i-bil"/></svg>
+          <input id="startRegnr" type="text" placeholder="Registreringsnummer" aria-label="Registreringsnummer" data-ta="placeholder aria-label" autocapitalize="characters" autocomplete="off" maxlength="8" spellcheck="false">
+        </div>
+        <!-- Uten registreringsnummer: velg biltype, så brukes gjennomsnittstall for typen -->
+        <p class="start-eller" id="startEller" data-t hidden>eller velg biltype</p>
+        <div class="start-typer" role="group" aria-label="Biltype" data-ta="aria-label">
+          <button type="button" class="typevalg" data-type="elbil" data-t><svg class="ikon" aria-hidden="true"><use href="#i-strom"/></svg>Elbil</button>
+          <button type="button" class="typevalg" data-type="bensin" data-t><svg class="ikon" aria-hidden="true"><use href="#i-drivstoff"/></svg>Bensin</button>
+          <button type="button" class="typevalg" data-type="diesel" data-t><svg class="ikon" aria-hidden="true"><use href="#i-drivstoff"/></svg>Diesel</button>
+          <button type="button" class="typevalg" data-type="hybrid" data-t><svg class="ikon" aria-hidden="true"><use href="#i-strom"/></svg>Ladbar hybrid</button>
+          <button type="button" class="typevalg" data-type="tung" data-t><svg class="ikon" aria-hidden="true"><use href="#i-bil"/></svg>Tungt (over 3,5 t)</button>
+        </div>
+        <p class="bilnavn" id="startBil" hidden></p>
+        <p class="feil" id="startFeil" role="alert" hidden></p>
+        <button type="submit" class="hovedknapp" id="startKnapp"><span data-t>Kom i gang</span></button>
+      </form>
+    </div>
+  </section>
+
+  <div class="oppsett">
+    <main class="panel" id="panel">
+      <header class="topp">
+        <h1>
+          <!-- Logoen er en knapp som åpner oppstartssiden igjen -->
+          <button type="button" class="hjemknapp" id="hjemKnapp" aria-label="Til oppstartssiden" title="Til oppstartssiden" data-ta="aria-label title">
+            <svg class="logo" viewBox="0 0 56 56" aria-hidden="true"><rect width="56" height="56" rx="14" fill="#534AB7"/><path d="M15 41 C15 27, 41 31, 41 16" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/><circle cx="15" cy="41" r="5" fill="#FFFFFF"/><circle cx="41" cy="16" r="7" fill="#FAC775"/></svg>
+            <span>Rute<span class="merkedel">pris</span></span>
+          </button>
+        </h1>
+        <div class="toppknapper">
+          <button type="button" class="ikonknapp sprakknapp" id="sprakKnapp" aria-label="Switch to English" title="Switch to English">EN</button>
+          <button type="button" class="ikonknapp" id="delKnapp" aria-label="Kopier lenke til dette søket" title="Kopier lenke til dette søket" data-ta="aria-label title" hidden>
+            <svg class="ikon" aria-hidden="true"><use href="#i-del"/></svg>
+          </button>
+          <button type="button" class="ikonknapp" id="temaKnapp" aria-label="Bytt mellom lys og mørk modus" title="Lys/mørk modus" data-ta="aria-label title">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <form id="skjema" class="skjema" autocomplete="off" novalidate>
+        <div class="steder">
+          <div class="felt kombinasjon medprikk">
+            <span class="prikkA" aria-hidden="true"></span>
+            <input id="fra" type="text" inputmode="search" enterkeyhint="search" placeholder="Fra" aria-label="Fra" data-ta="placeholder aria-label" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="fraListe" spellcheck="false">
+            <ul id="fraListe" class="forslag" role="listbox" hidden></ul>
+          </div>
+          <button type="button" class="ikonknapp bytt" id="byttKnapp" aria-label="Bytt om fra og til" title="Bytt om fra og til" data-ta="aria-label title">
+            <svg class="ikon" aria-hidden="true"><use href="#i-bytt"/></svg>
+          </button>
+          <div class="felt kombinasjon medprikk">
+            <span class="prikkB" aria-hidden="true"></span>
+            <input id="til" type="text" inputmode="search" enterkeyhint="search" placeholder="Til" aria-label="Til" data-ta="placeholder aria-label" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="tilListe" spellcheck="false">
+            <ul id="tilListe" class="forslag" role="listbox" hidden></ul>
+          </div>
+        </div>
+
+        <div class="rad">
+          <div class="felt medikon i-bilfelt" id="regnrFelt" title="Registreringsnummer" data-ta="title" hidden>
+            <svg class="ikon" aria-hidden="true"><use href="#i-bil"/></svg>
+            <input id="regnr" type="text" placeholder="Regnr" aria-label="Registreringsnummer" data-ta="placeholder aria-label" autocapitalize="characters" autocomplete="off" maxlength="8" spellcheck="false">
+          </div>
+          <div class="felt medikon i-bilfelt" id="drivstoffFelt" title="Kjøretøy" data-ta="title">
+            <svg class="ikon" aria-hidden="true"><use href="#i-bil"/></svg>
+            <select id="drivstoff" aria-label="Kjøretøy" data-ta="aria-label">
+              <option value="elbil" selected data-t>Elbil</option>
+              <option value="bensin" data-t>Bensin</option>
+              <option value="diesel" data-t>Diesel</option>
+              <option value="hybrid" data-t>Ladbar hybrid</option>
+              <option value="tung" data-t>Tungt (over 3,5 t)</option>
+            </select>
+          </div>
+          <div class="felt medikon i-brikkefelt" title="AutoPASS-avtale og brikke" data-ta="title">
+            <svg class="ikon" aria-hidden="true"><use href="#i-brikke"/></svg>
+            <select id="avtale" aria-label="AutoPASS-avtale" data-ta="aria-label">
+              <option value="ja" selected data-t>Med brikke</option>
+              <option value="nei" data-t>Uten brikke</option>
+            </select>
+          </div>
+        </div>
+
+        <p class="bilnavn" id="bilnavn" hidden></p>
+
+        <div class="medknapp">
+          <div class="felt medikon i-tidfelt" title="Avreise" data-ta="title">
+            <svg class="ikon" aria-hidden="true"><use href="#i-klokke"/></svg>
+            <input id="avreise" type="datetime-local" aria-label="Avreise" data-ta="aria-label" required>
+          </div>
+          <button type="button" class="tekstknapp" id="naaKnapp" data-t>Nå</button>
+        </div>
+
+        <div class="brytere">
+          <label class="bryter" for="turRetur" title="Returen starter rett etter at du er framme" data-t data-ta="title">
+            <input type="checkbox" id="turRetur">
+            <span class="spor" aria-hidden="true"></span>
+            <svg class="ikon" aria-hidden="true"><use href="#i-retur"/></svg>Tur/retur
+          </label>
+          <label class="bryter" for="ferjer" title="Av: rutene legges utenom ferjer der det finnes vei" data-t data-ta="title">
+            <input type="checkbox" id="ferjer" checked>
+            <span class="spor" aria-hidden="true"></span>
+            <svg class="ikon" aria-hidden="true"><use href="#i-ferje"/></svg>Ferjer
+          </label>
+        </div>
+
+        <!-- Skjult: forbruket hentes fra bilen, strømavtalen byttes under resultatet og hurtigladeprisen i rutekortet -->
+        <details class="avansert" hidden>
+          <summary><svg class="ikon" aria-hidden="true"><use id="energiIkon" href="#i-strom"/></svg><span id="forbrukTittel">Forbruk</span></summary>
+          <div class="rad">
+            <div class="felt">
+              <label for="forbruk" id="forbrukEtikett">kWh/100 km</label>
+              <input id="forbruk" type="number" min="0" max="200" step="0.1" inputmode="decimal">
+            </div>
+            <div class="felt">
+              <label for="energipris" id="prisEtikett">kr/kWh</label>
+              <input id="energipris" type="number" min="0" max="100" step="0.01" inputmode="decimal">
+            </div>
+          </div>
+          <div class="rad" id="stromRad">
+            <div class="felt">
+              <label for="stromavtale">Strømavtale hjemme</label>
+              <select id="stromavtale">
+                <option value="spot" selected>Spotpris med strømstøtte</option>
+                <option value="norgespris">Norgespris</option>
+              </select>
+            </div>
+            <!-- Hurtigladeprisen velges med glidebryteren i rutekortet, og bare når turen krever hurtiglading -->
+            <div class="felt" hidden>
+              <label for="hurtigpris">kr/kWh hurtiglading</label>
+              <input id="hurtigpris" type="number" min="0" max="100" step="0.1" inputmode="decimal">
+            </div>
+          </div>
+        </details>
+
+        <button type="submit" class="hovedknapp" id="sokKnapp"><span data-t>Finn ruter</span></button>
+        <p class="feil" id="feil" role="alert" hidden></p>
+      </form>
+
+      <section id="resultat" aria-live="polite"></section>
+
+      <footer class="bunn" id="oppdatert"></footer>
+    </main>
+
+    <div class="kartflate">
+      <div id="kart" role="application" aria-label="Kart med rutealternativer, bomstasjoner og ferjer" data-ta="aria-label"></div>
+      <!-- Vises kort når kartet berøres med én finger på mobil -->
+      <div class="karthint" id="karthint" data-t hidden>Bruk to fingre for å flytte kartet</div>
+      <div class="tegnforklaring" id="tegnforklaring" hidden>
+        <span data-t><i class="prikk betalt"></i>Betalt</span>
+        <span data-t><i class="prikk gratis"></i>Timesregel</span>
+        <span data-t><i class="prikk unngaatt"></i>Unngått</span>
+        <span data-t><i class="prikk ferje"></i>Ferje</span>
+        <span class="bare-retur" data-t hidden><i class="strek tur"></i>Tur</span>
+        <span class="bare-retur" data-t hidden><i class="strek retur"></i>Retur</span>
+      </div>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status" hidden></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="app.js" type="module"></script>
+</body>
+</html>

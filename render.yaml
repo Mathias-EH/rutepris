@@ -1,0 +1,17 @@
+# Oppskrift for gratis hosting hos Render (https://render.com). Se README, «Legge siden på nett».
+# Render leser denne fila når du oppretter en «Blueprint» fra GitHub-repoet.
+services:
+  - type: web
+    name: rutepris
+    runtime: node
+    plan: free
+    region: frankfurt
+    buildCommand: "node --version" # ingen avhengigheter å installere
+    startCommand: node server.js
+    healthCheckPath: /api/meta
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      # Nøkkelen til kjøretøyregisteret legges inn i Render sitt kontrollpanel, aldri i repoet.
+      - key: SVV_API_KEY
+        sync: false
